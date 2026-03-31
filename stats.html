@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据统计 - 怪物猎人：旅人</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-header p {
+            color: #95a5a6;
+        }
+        
+        /* 数据概览卡片 */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+        
+        /* 增长率区域 */
+        .growth-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .growth-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .growth-card h3 {
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+        
+        .growth-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .growth-item:last-child {
+            border-bottom: none;
+        }
+        
+        .growth-item .label {
+            color: #95a5a6;
+        }
+        
+        .growth-item .value {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .growth-item .value.positive {
+            color: #2ecc71;
+        }
+        
+        .growth-item .value.negative {
+            color: #e74c3c;
+        }
+        
+        /* 图表区域 */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chart-card h3 {
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        /* 渠道数据表 */
+        .channel-table {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+        }
+        
+        .channel-table h3 {
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        th {
+            color: #95a5a6;
+            font-weight: normal;
+        }
+        
+        td {
+            font-size: 1.1em;
+        }
+        
+        .channel-icon {
+            font-size: 1.3em;
+            margin-right: 10px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .stats-overview,
+            .growth-section,
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← 返回主页</a>
+        
+        <div class="page-header">
+            <h1>📊 数据统计</h1>
+            <p>各渠道预约与下载数据追踪</p>
+        </div>
+        
+        <!-- 数据概览 -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="icon">👥</div>
+                <div class="value" id="totalReserve">-</div>
+                <div class="label">总预约数</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📱</div>
+                <div class="value" id="taptapReserve">-</div>
+                <div class="label">TapTap预约</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🎮</div>
+                <div class="value" id="hykbReserve">-</div>
+                <div class="label">好游快爆预约</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📈</div>
+                <div class="value" id="dailyGrowth">-</div>
+                <div class="label">日增长率</div>
+            </div>
+        </div>
+        
+        <!-- 增长率区域 -->
+        <div class="growth-section">
+            <div class="growth-card">
+                <h3>📈 增长率统计</h3>
+                <div class="growth-item">
+                    <span class="label">日增长率</span>
+                    <span class="value" id="dailyRate">-</span>
+                </div>
+                <div class="growth-item">
+                    <span class="label">周增长率</span>
+                    <span class="value" id="weeklyRate">-</span>
+                </div>
+                <div class="growth-item">
+                    <span class="label">月增长率</span>
+                    <span class="value" id="monthlyRate">-</span>
+                </div>
+            </div>
+            
+            <div class="growth-card">
+                <h3>📊 渠道分布</h3>
+                <div class="chart-container">
+                    <canvas id="channelChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 趋势图表 -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3>📉 预约趋势</h3>
+                <div class="chart-container">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3>📊 增长趋势</h3>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 渠道数据表 -->
+        <div class="channel-table">
+            <h3>📋 渠道详细数据</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>渠道</th>
+                        <th>预约数</th>
+                        <th>下载数</th>
+                        <th>更新时间</th>
+                    </tr>
+                </thead>
+                <tbody id="channelTableBody">
+                    <!-- 动态加载 -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 历史数据记录 -->
+        <div class="channel-table" style="margin-top: 25px;">
+            <h3>📜 历史数据记录</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>TapTap</th>
+                        <th>B站</th>
+                        <th>好游快爆</th>
+                        <th>4399</th>
+                        <th>总计</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <!-- 动态加载 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function formatNumber(num) {
+            if (num >= 10000) {
+                return (num / 10000).toFixed(1) + '万';
+            }
+            return num ? num.toLocaleString() : '-';
+        }
+        
+        async function loadStats() {
+            try {
+                const res = await fetch('data/stats.json');
+                const data = await res.json();
+                
+                // 更新概览
+                const taptapReserve = data.current?.taptap?.reserve || 0;
+                const hykbReserve = data.current?.haoyoukuaibao?.reserve || 0;
+                const bilibiliReserve = data.current?.bilibili?.reserve || 0;
+                const reserve4399 = data.current?.['4399']?.reserve || 0;
+                const totalReserve = taptapReserve + hykbReserve + bilibiliReserve + reserve4399;
+                
+                document.getElementById('totalReserve').textContent = formatNumber(totalReserve);
+                document.getElementById('taptapReserve').textContent = formatNumber(taptapReserve);
+                document.getElementById('hykbReserve').textContent = formatNumber(hykbReserve);
+                
+                const dailyGrowth = data.growth_rate?.daily || 0;
+                document.getElementById('dailyGrowth').textContent = dailyGrowth + '%';
+                
+                // 更新增长率
+                const dailyRate = data.growth_rate?.daily || 0;
+                const weeklyRate = data.growth_rate?.weekly || 0;
+                const monthlyRate = data.growth_rate?.monthly || 0;
+                
+                const dailyElem = document.getElementById('dailyRate');
+                dailyElem.textContent = dailyRate + '%';
+                dailyElem.className = 'value ' + (dailyRate >= 0 ? 'positive' : 'negative');
+                
+                const weeklyElem = document.getElementById('weeklyRate');
+                weeklyElem.textContent = weeklyRate + '%';
+                weeklyElem.className = 'value ' + (weeklyRate >= 0 ? 'positive' : 'negative');
+                
+                const monthlyElem = document.getElementById('monthlyRate');
+                monthlyElem.textContent = monthlyRate + '%';
+                monthlyElem.className = 'value ' + (monthlyRate >= 0 ? 'positive' : 'negative');
+                
+                // 更新渠道表格
+                const tableBody = document.getElementById('channelTableBody');
+                const channels = [
+                    { name: 'TapTap', icon: '📱', data: data.current?.taptap },
+                    { name: 'B站', icon: '📺', data: data.current?.bilibili },
+                    { name: '好游快爆', icon: '🎮', data: data.current?.haoyoukuaibao },
+                    { name: '4399', icon: '🕹️', data: data.current?.['4399'] }
+                ];
+                
+                tableBody.innerHTML = channels.map(ch => {
+                    const updateTime = ch.data?.update_time ? 
+                        new Date(ch.data.update_time).toLocaleString('zh-CN') : '-';
+                    const note = ch.data?.note ? ` <span style="color: #7f8c8d; font-size: 0.8em;">(${ch.data.note})</span>` : '';
+                    const rating = ch.data?.rating ? ` <span style="color: #f39c12; font-size: 0.8em;">评分${ch.data.rating}</span>` : '';
+                    
+                    return `
+                        <tr>
+                            <td><span class="channel-icon">${ch.icon}</span>${ch.name}${note}${rating}</td>
+                            <td>${formatNumber(ch.data?.reserve)}</td>
+                            <td>${formatNumber(ch.data?.download)}</td>
+                            <td>${updateTime}</td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // 更新历史数据表格
+                const historyBody = document.getElementById('historyTableBody');
+                const history = data.history || [];
+                
+                // 按日期倒序显示（最新的在前）
+                const sortedHistory = [...history].reverse();
+                
+                if (sortedHistory.length === 0) {
+                    historyBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #7f8c8d;">暂无历史数据</td></tr>';
+                } else {
+                    historyBody.innerHTML = sortedHistory.map(h => `
+                        <tr>
+                            <td>${h.date}</td>
+                            <td>${formatNumber(h.taptap_reserve)}</td>
+                            <td>${formatNumber(h.bilibili_reserve)}</td>
+                            <td>${formatNumber(h.haoyoukuaibao_reserve)}</td>
+                            <td>${formatNumber(h.reserve_4399)}</td>
+                            <td style="color: #f39c12; font-weight: bold;">${formatNumber(h.total_reserve)}</td>
+                        </tr>
+                    `).join('');
+                }
+                
+                // 绘制渠道分布饼图
+                new Chart(document.getElementById('channelChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['TapTap', '好游快爆', 'B站', '4399'],
+                        datasets: [{
+                            data: [taptapReserve, hykbReserve, bilibiliReserve, reserve4399],
+                            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#fff' }
+                            }
+                        }
+                    }
+                });
+                
+                // 绘制趋势图
+                const historyData = data.history || [];
+                const labels = historyData.map(h => h.date);
+                const totalData = historyData.map(h => h.total_reserve);
+                
+                new Chart(document.getElementById('trendChart'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '总预约数',
+                            data: totalData,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                            y: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+                
+                // 增长趋势（简化展示）
+                new Chart(document.getElementById('growthChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['日增长', '周增长', '月增长'],
+                        datasets: [{
+                            label: '增长率 (%)',
+                            data: [dailyRate, weeklyRate, monthlyRate],
+                            backgroundColor: dailyRate >= 0 ? '#2ecc71' : '#e74c3c'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                            y: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                console.error('数据加载失败:', error);
+            }
+        }
+        
+        loadStats();
+    </script>
+</body>
+</html>

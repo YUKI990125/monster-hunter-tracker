@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动追踪 - 怪物猎人：旅人</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-header p {
+            color: #95a5a6;
+        }
+        
+        /* 活动区域 */
+        .activities-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-header .icon {
+            font-size: 2em;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5em;
+        }
+        
+        .section-header .count {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        /* 活动卡片 */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .activity-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .activity-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .activity-card.reward {
+            border-left: 4px solid #f39c12;
+        }
+        
+        .activity-card.community {
+            border-left: 4px solid #3498db;
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .activity-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            line-height: 1.4;
+            flex: 1;
+        }
+        
+        .channel-badge {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+        
+        .activity-meta {
+            display: flex;
+            gap: 15px;
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+        
+        .activity-keywords {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        
+        .keyword-tag {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        
+        .activity-description {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        
+        .activity-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
+        
+        .activity-link:hover {
+            color: #5dade2;
+        }
+        
+        /* 状态标签 */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        
+        .status-badge.active {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        
+        .status-badge.ended {
+            background: rgba(149, 165, 166, 0.2);
+            color: #95a5a6;
+        }
+        
+        .status-badge.upcoming {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
+        
+        .status-badge.drawn {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← 返回主页</a>
+        
+        <div class="page-header">
+            <h1>🎁 活动追踪</h1>
+            <p>各渠道论坛活动采集</p>
+        </div>
+        
+        <!-- 有奖活动 -->
+        <div class="activities-section">
+            <div class="section-header">
+                <span class="icon">🏆</span>
+                <h2>有奖活动</h2>
+                <span class="count" id="rewardCount">0 个</span>
+            </div>
+            <div class="activities-grid" id="rewardActivities">
+                <!-- 动态加载 -->
+            </div>
+        </div>
+        
+        <!-- 社区活动 -->
+        <div class="activities-section">
+            <div class="section-header">
+                <span class="icon">🎮</span>
+                <h2>社区活动</h2>
+                <span class="count" id="communityCount">0 个</span>
+            </div>
+            <div class="activities-grid" id="communityActivities">
+                <!-- 动态加载 -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function loadActivities() {
+            try {
+                const res = await fetch('data/activities.json');
+                const data = await res.json();
+                
+                // 渲染有奖活动
+                const rewardContainer = document.getElementById('rewardActivities');
+                const rewardActivities = data.reward_activities || [];
+                
+                document.getElementById('rewardCount').textContent = rewardActivities.length + ' 个';
+                
+                if (rewardActivities.length === 0) {
+                    rewardContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">📭</div>
+                            <p>暂无有奖活动</p>
+                        </div>
+                    `;
+                } else {
+                    rewardContainer.innerHTML = rewardActivities.map(activity => {
+                        let statusClass = 'upcoming';
+                        if (activity.status === '进行中') statusClass = 'active';
+                        else if (activity.status === '已结束') statusClass = 'ended';
+                        else if (activity.status === '已开奖') statusClass = 'drawn';
+                        
+                        const url = activity.url || '#';
+                        
+                        return `
+                            <div class="activity-card reward">
+                                <div class="activity-header">
+                                    <div class="activity-title">${activity.title || '未命名活动'}</div>
+                                    <span class="channel-badge">${activity.channel || '未知'}</span>
+                                </div>
+                                <div class="activity-meta">
+                                    ${activity.start_date ? `<span>开始：${activity.start_date}</span>` : ''}
+                                    ${activity.end_date ? `<span>结束：${activity.end_date}</span>` : ''}
+                                </div>
+                                ${activity.keywords && activity.keywords.length > 0 ? `
+                                    <div class="activity-keywords">
+                                        ${activity.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
+                                    </div>
+                                ` : ''}
+                                ${activity.description ? `
+                                    <div class="activity-description">${activity.description}</div>
+                                ` : ''}
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="status-badge ${statusClass}">${activity.status || '未知'}</span>
+                                    ${url !== '#' ? `<a href="${url}" target="_blank" class="activity-link">查看详情 →</a>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                
+                // 渲染社区活动
+                const communityContainer = document.getElementById('communityActivities');
+                const communityActivities = data.community_activities || [];
+                
+                document.getElementById('communityCount').textContent = communityActivities.length + ' 个';
+                
+                if (communityActivities.length === 0) {
+                    communityContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">📭</div>
+                            <p>暂无社区活动</p>
+                        </div>
+                    `;
+                } else {
+                    communityContainer.innerHTML = communityActivities.map(activity => {
+                        let statusClass = 'upcoming';
+                        if (activity.status === '进行中') statusClass = 'active';
+                        else if (activity.status === '已结束') statusClass = 'ended';
+                        else if (activity.status === '已开奖') statusClass = 'drawn';
+                        
+                        const url = activity.url || '#';
+                        
+                        return `
+                            <div class="activity-card community">
+                                <div class="activity-header">
+                                    <div class="activity-title">${activity.title || '未命名活动'}</div>
+                                    <span class="channel-badge">${activity.channel || '未知'}</span>
+                                </div>
+                                <div class="activity-meta">
+                                    ${activity.start_date ? `<span>开始：${activity.start_date}</span>` : ''}
+                                    ${activity.end_date ? `<span>结束：${activity.end_date}</span>` : ''}
+                                </div>
+                                ${activity.keywords && activity.keywords.length > 0 ? `
+                                    <div class="activity-keywords">
+                                        ${activity.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
+                                    </div>
+                                ` : ''}
+                                ${activity.description ? `
+                                    <div class="activity-description">${activity.description}</div>
+                                ` : ''}
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="status-badge ${statusClass}">${activity.status || '未知'}</span>
+                                    ${url !== '#' ? `<a href="${url}" target="_blank" class="activity-link">查看详情 →</a>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                
+            } catch (error) {
+                console.error('数据加载失败:', error);
+            }
+        }
+        
+        loadActivities();
+    </script>
+</body>
+</html>

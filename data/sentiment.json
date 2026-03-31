@@ -1,0 +1,42 @@
+{
+  "last_update": "2026-03-31T10:00:00",
+  "game_name": "怪物猎人：旅人",
+  "daily_reports": [
+    {
+      "date": "2026-03-31",
+      "summary": {
+        "positive": 65,
+        "neutral": 25,
+        "negative": 10,
+        "total_comments": 500
+      },
+      "hot_topics": [
+        "期待公测",
+        "画质优秀",
+        "希望优化好一点"
+      ],
+      "positive_keywords": ["期待", "画质好", "动作流畅", "还原度高"],
+      "negative_keywords": ["等待太久", "配置要求高", "希望优化"],
+      "sample_comments": {
+        "positive": [
+          "终于等到怪猎手游了，期待！",
+          "实机画面看起来很棒，卡普空监修放心"
+        ],
+        "neutral": [
+          "观望中，看后续表现",
+          "希望不要氪金太重"
+        ],
+        "negative": [
+          "等太久了，什么时候公测",
+          "测试资格太难抢了"
+        ]
+      }
+    }
+  ],
+  "history_summary": {
+    "total_positive": 65,
+    "total_neutral": 25,
+    "total_negative": 10,
+    "trend": "稳定"
+  }
+}

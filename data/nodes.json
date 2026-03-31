@@ -1,0 +1,84 @@
+{
+  "last_update": "2026-03-31T17:45:00",
+  "game_name": "怪物猎人：旅人",
+  "nodes": {
+    "预约开启": {
+      "date": "2024-11-13",
+      "time": null,
+      "source": ["TapTap", "官网"],
+      "status": "已确认"
+    },
+    "一测招募": {
+      "date": "2025-11-11",
+      "time": "11:00",
+      "source": ["TapTap", "B站", "好游快爆"],
+      "status": "已确认",
+      "note": "首次封闭测试招募"
+    },
+    "一测开启": {
+      "date": "2025-12-18",
+      "time": "11:00",
+      "source": ["TapTap", "B站", "好游快爆", "4399"],
+      "status": "已确认",
+      "note": "首次封闭测试开启"
+    },
+    "一测结束": {
+      "date": "2025-12-25",
+      "time": null,
+      "source": ["TapTap"],
+      "status": "已确认",
+      "note": "首次封闭测试结束"
+    },
+    "二测招募": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "待定",
+      "note": "第二次测试招募"
+    },
+    "二测开启": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "待定",
+      "note": "第二次测试开启"
+    },
+    "二测结束": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "待定",
+      "note": "第二次测试结束"
+    },
+    "公测首发定档": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "待定"
+    },
+    "前瞻直播": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "暂无"
+    },
+    "预注册": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "暂无"
+    },
+    "预下载": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "待定"
+    },
+    "公测开启": {
+      "date": null,
+      "time": null,
+      "source": [],
+      "status": "待定"
+    }
+  }
+}

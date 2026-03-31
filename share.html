@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《怪物猎人：旅人》渠道数据监控报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-header .subtitle {
+            color: #95a5a6;
+            font-size: 1.1em;
+        }
+        
+        .page-header .update-time {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        /* 导航标签 */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            border-color: transparent;
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 数据概览卡片 */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+        
+        /* 卡片容器 */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .card h3 {
+            margin-bottom: 20px;
+            color: #3498db;
+            font-size: 1.2em;
+        }
+        
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #3498db, #9b59b6);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #3498db;
+            border: 2px solid #1a1a2e;
+        }
+        
+        .timeline-item.confirmed::before {
+            background: #2ecc71;
+        }
+        
+        .timeline-item.pending::before {
+            background: #f39c12;
+        }
+        
+        .timeline-item.none::before {
+            background: #95a5a6;
+        }
+        
+        .node-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .node-date {
+            color: #f39c12;
+            font-size: 1em;
+        }
+        
+        .node-time {
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+        
+        .source-tag {
+            display: inline-block;
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            margin-right: 5px;
+        }
+        
+        .status-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+        
+        .status-tag.confirmed { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+        .status-tag.pending { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
+        .status-tag.none { background: rgba(149, 165, 166, 0.2); color: #95a5a6; }
+        
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        th {
+            color: #95a5a6;
+            font-weight: normal;
+        }
+        
+        td {
+            font-size: 1.1em;
+        }
+        
+        .channel-icon {
+            font-size: 1.3em;
+            margin-right: 10px;
+        }
+        
+        /* 活动卡片 */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .activity-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .activity-card.reward {
+            border-left: 4px solid #f39c12;
+        }
+        
+        .activity-card.community {
+            border-left: 4px solid #3498db;
+        }
+        
+        .activity-title {
+            font-weight: bold;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+        }
+        
+        .channel-badge {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .keyword-tag {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            margin-right: 5px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        
+        .status-badge.active { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+        .status-badge.ended { background: rgba(149, 165, 166, 0.2); color: #95a5a6; }
+        .status-badge.drawn { background: rgba(155, 89, 182, 0.2); color: #9b59b6; }
+        
+        .activity-meta {
+            color: #7f8c8d;
+            font-size: 0.85em;
+            margin: 8px 0;
+        }
+        
+        .activity-desc {
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+        
+        /* 舆情卡片 */
+        .sentiment-bar {
+            display: flex;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .sentiment-positive {
+            background: #2ecc71;
+        }
+        
+        .sentiment-neutral {
+            background: #3498db;
+        }
+        
+        .sentiment-negative {
+            background: #e74c3c;
+        }
+        
+        .sentiment-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .two-cols {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>🎮 怪物猎人：旅人</h1>
+            <div class="subtitle">渠道数据监控报告</div>
+            <div class="update-time">数据更新时间：2026年3月31日 19:57</div>
+        </div>
+        
+        <!-- 导航标签 -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('overview')">📊 数据概览</div>
+            <div class="nav-tab" onclick="showSection('nodes')">📅 关键节点</div>
+            <div class="nav-tab" onclick="showSection('stats')">📈 预约数据</div>
+            <div class="nav-tab" onclick="showSection('activities')">🎁 活动追踪</div>
+            <div class="nav-tab" onclick="showSection('sentiment')">💬 舆情分析</div>
+        </div>
+        
+        <!-- 数据概览 -->
+        <div id="overview" class="content-section active">
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="icon">👥</div>
+                    <div class="value">69.4万</div>
+                    <div class="label">总预约数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📱</div>
+                    <div class="value">37万</div>
+                    <div class="label">TapTap预约</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📺</div>
+                    <div class="value">13.2万</div>
+                    <div class="label">B站预约</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">🎮</div>
+                    <div class="value">13.2万</div>
+                    <div class="label">好游快爆预约</div>
+                </div>
+            </div>
+            
+            <div class="two-cols">
+                <div class="card">
+                    <h3>📊 渠道预约分布</h3>
+                    <div class="chart-container">
+                        <canvas id="overviewChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>📋 渠道数据详情</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>渠道</th>
+                                <th>预约数</th>
+                                <th>评分</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="channel-icon">📱</span>TapTap</td>
+                                <td>37万</td>
+                                <td>7.3</td>
+                            </tr>
+                            <tr>
+                                <td><span class="channel-icon">📺</span>B站</td>
+                                <td>13.2万</td>
+                                <td>9.3</td>
+                            </tr>
+                            <tr>
+                                <td><span class="channel-icon">🎮</span>好游快爆</td>
+                                <td>13.2万</td>
+                                <td>8.2</td>
+                            </tr>
+                            <tr>
+                                <td><span class="channel-icon">🕹️</span>4399</td>
+                                <td>6万</td>
+                                <td>9.2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 关键节点 -->
+        <div id="nodes" class="content-section">
+            <div class="card">
+                <h3>📅 游戏关键节点时间线</h3>
+                <div class="timeline">
+                    <div class="timeline-item confirmed">
+                        <div class="node-name">预约开启</div>
+                        <div class="node-date">2024年11月13日</div>
+                        <div class="source-tags">
+                            <span class="source-tag">TapTap</span>
+                            <span class="source-tag">官网</span>
+                        </div>
+                        <span class="status-tag confirmed">已确认</span>
+                    </div>
+                    <div class="timeline-item confirmed">
+                        <div class="node-name">一测招募</div>
+                        <div class="node-date">2025年11月11日 11:00</div>
+                        <div style="color: #7f8c8d; font-size: 0.9em;">首次封闭测试招募</div>
+                        <div class="source-tags">
+                            <span class="source-tag">TapTap</span>
+                            <span class="source-tag">B站</span>
+                            <span class="source-tag">好游快爆</span>
+                        </div>
+                        <span class="status-tag confirmed">已确认</span>
+                    </div>
+                    <div class="timeline-item confirmed">
+                        <div class="node-name">一测开启</div>
+                        <div class="node-date">2025年12月18日 11:00</div>
+                        <div style="color: #7f8c8d; font-size: 0.9em;">首次封闭测试开启</div>
+                        <div class="source-tags">
+                            <span class="source-tag">TapTap</span>
+                            <span class="source-tag">B站</span>
+                            <span class="source-tag">好游快爆</span>
+                            <span class="source-tag">4399</span>
+                        </div>
+                        <span class="status-tag confirmed">已确认</span>
+                    </div>
+                    <div class="timeline-item confirmed">
+                        <div class="node-name">一测结束</div>
+                        <div class="node-date">2025年12月25日</div>
+                        <div style="color: #7f8c8d; font-size: 0.9em;">首次封闭测试结束</div>
+                        <span class="status-tag confirmed">已确认</span>
+                    </div>
+                    <div class="timeline-item pending">
+                        <div class="node-name">二测招募</div>
+                        <div class="node-date" style="color: #f39c12;">待定</div>
+                        <span class="status-tag pending">待定</span>
+                    </div>
+                    <div class="timeline-item pending">
+                        <div class="node-name">公测首发定档</div>
+                        <div class="node-date" style="color: #f39c12;">待定</div>
+                        <span class="status-tag pending">待定</span>
+                    </div>
+                    <div class="timeline-item pending">
+                        <div class="node-name">预下载</div>
+                        <div class="node-date" style="color: #f39c12;">待定</div>
+                        <span class="status-tag pending">待定</span>
+                    </div>
+                    <div class="timeline-item pending">
+                        <div class="node-name">公测开启</div>
+                        <div class="node-date" style="color: #f39c12;">待定</div>
+                        <span class="status-tag pending">待定</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 预约数据 -->
+        <div id="stats" class="content-section">
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="icon">👥</div>
+                    <div class="value">69.4万</div>
+                    <div class="label">总预约数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📱</div>
+                    <div class="value">37万</div>
+                    <div class="label">TapTap</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">🎮</div>
+                    <div class="value">13.2万</div>
+                    <div class="label">好游快爆</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📈</div>
+                    <div class="value">-</div>
+                    <div class="label">日增长率</div>
+                </div>
+            </div>
+            
+            <div class="two-cols">
+                <div class="card">
+                    <h3>📊 渠道分布</h3>
+                    <div class="chart-container">
+                        <canvas id="channelDistChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>📈 增长率统计</h3>
+                    <div style="padding: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #95a5a6;">日增长率</span>
+                            <span style="color: #2ecc71; font-weight: bold;">-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #95a5a6;">周增长率</span>
+                            <span style="color: #2ecc71; font-weight: bold;">-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 15px 0;">
+                            <span style="color: #95a5a6;">月增长率</span>
+                            <span style="color: #2ecc71; font-weight: bold;">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📋 渠道详细数据</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>渠道</th>
+                            <th>预约数</th>
+                            <th>评分</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="channel-icon">📱</span>TapTap</td>
+                            <td>37万</td>
+                            <td>7.3</td>
+                            <td>关注36万</td>
+                        </tr>
+                        <tr>
+                            <td><span class="channel-icon">📺</span>B站</td>
+                            <td>13.2万</td>
+                            <td>9.3</td>
+                            <td>游戏中心预约数</td>
+                        </tr>
+                        <tr>
+                            <td><span class="channel-icon">🎮</span>好游快爆</td>
+                            <td>13.2万</td>
+                            <td>8.2</td>
+                            <td>期待榜#56</td>
+                        </tr>
+                        <tr>
+                            <td><span class="channel-icon">🕹️</span>4399</td>
+                            <td>6万</td>
+                            <td>9.2</td>
+                            <td>关注人数，预约榜Top57</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- 活动追踪 -->
+        <div id="activities" class="content-section">
+            <div class="card">
+                <h3>🏆 有奖活动（3个）</h3>
+                <div class="activities-grid">
+                    <div class="activity-card reward">
+                        <div class="activity-title">预约开启活动</div>
+                        <span class="channel-badge">官网</span>
+                        <div class="activity-meta">开始：2024-11-13</div>
+                        <div class="activity-desc">预约游戏可获得专属奖励</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">页面活动</span>
+                            <span class="keyword-tag">定制</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge active">进行中</span>
+                        </div>
+                    </div>
+                    <div class="activity-card reward">
+                        <div class="activity-title">福利丨TapTap新春专属红包封面派送中！</div>
+                        <span class="channel-badge">TapTap</span>
+                        <div class="activity-meta">2026-02-04 至 2026-02-23</div>
+                        <div class="activity-desc">TapTap新春专属红包封面派送活动</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">福利</span>
+                            <span class="keyword-tag">红包封面</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge ended">已结束</span>
+                        </div>
+                    </div>
+                    <div class="activity-card reward">
+                        <div class="activity-title">怪猎旅人春节红包封面放送啦！</div>
+                        <span class="channel-badge">TapTap</span>
+                        <div class="activity-meta">开始：2026-01-30</div>
+                        <div class="activity-desc">春节红包封面发放，数量有限领完为止</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">红包封面</span>
+                            <span class="keyword-tag">福利</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge ended">已结束</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🎮 社区活动（4个，含已开奖）</h3>
+                <div class="activities-grid">
+                    <div class="activity-card community">
+                        <div class="activity-title">【已开奖】怪猎旅人社区问卷调研</div>
+                        <span class="channel-badge">TapTap</span>
+                        <div class="activity-meta">开始：2026-02-28</div>
+                        <div class="activity-desc">社区问卷调研活动，奖品为镭射票</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">已开奖</span>
+                            <span class="keyword-tag">问卷调研</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge drawn">已开奖</span>
+                        </div>
+                    </div>
+                    <div class="activity-card community">
+                        <div class="activity-title">【已开奖】分享集会所故事，赢好礼</div>
+                        <span class="channel-badge">TapTap</span>
+                        <div class="activity-meta">开始：2026-02-02</div>
+                        <div class="activity-desc">分享集会所故事活动</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">已开奖</span>
+                            <span class="keyword-tag">赢好礼</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge drawn">已开奖</span>
+                        </div>
+                    </div>
+                    <div class="activity-card community">
+                        <div class="activity-title">TAPTAP体验团资格已公布！</div>
+                        <span class="channel-badge">TapTap</span>
+                        <div class="activity-meta">开始：2026-02-03</div>
+                        <div class="activity-desc">TapTap体验团资格公布</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">资格已公布</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge drawn">已开奖</span>
+                        </div>
+                    </div>
+                    <div class="activity-card community">
+                        <div class="activity-title">【已开奖】老大来投票喵！支持怪猎旅人喵！</div>
+                        <span class="channel-badge">TapTap</span>
+                        <div class="activity-meta">开始：2025-12-30</div>
+                        <div class="activity-desc">投票支持活动</div>
+                        <div style="margin-top: 10px;">
+                            <span class="keyword-tag">已开奖</span>
+                            <span class="keyword-tag">投票</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="status-badge drawn">已开奖</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 舆情分析 -->
+        <div id="sentiment" class="content-section">
+            <div class="card">
+                <h3>💬 舆情概览（2026-03-31）</h3>
+                <div class="sentiment-bar">
+                    <div class="sentiment-positive" style="width: 65%;"></div>
+                    <div class="sentiment-neutral" style="width: 25%;"></div>
+                    <div class="sentiment-negative" style="width: 10%;"></div>
+                </div>
+                <div class="sentiment-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #2ecc71;"></div>
+                        <span>好评 65%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #3498db;"></div>
+                        <span>中立 25%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #e74c3c;"></div>
+                        <span>差评 10%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="two-cols">
+                <div class="card">
+                    <h3>🔥 热门话题</h3>
+                    <div style="padding: 10px 0;">
+                        <div style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #f39c12;">#1</span> 期待公测
+                        </div>
+                        <div style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #f39c12;">#2</span> 画质优秀
+                        </div>
+                        <div style="padding: 12px 0;">
+                            <span style="color: #f39c12;">#3</span> 希望优化好一点
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>📝 关键词分析</h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="color: #2ecc71; margin-bottom: 10px;">👍 正面关键词</div>
+                        <div>
+                            <span class="keyword-tag" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71;">期待</span>
+                            <span class="keyword-tag" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71;">画质好</span>
+                            <span class="keyword-tag" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71;">动作流畅</span>
+                            <span class="keyword-tag" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71;">还原度高</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="color: #e74c3c; margin-bottom: 10px;">👎 负面关键词</div>
+                        <div>
+                            <span class="keyword-tag" style="background: rgba(231, 76, 60, 0.2); color: #e74c3c;">等待太久</span>
+                            <span class="keyword-tag" style="background: rgba(231, 76, 60, 0.2); color: #e74c3c;">配置要求高</span>
+                            <span class="keyword-tag" style="background: rgba(231, 76, 60, 0.2); color: #e74c3c;">希望优化</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>💬 玩家评论示例</h3>
+                <div style="margin-bottom: 20px;">
+                    <div style="color: #2ecc71; margin-bottom: 10px;">👍 好评</div>
+                    <div style="background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        "终于等到怪猎手游了，期待！"
+                    </div>
+                    <div style="background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 8px;">
+                        "实机画面看起来很棒，卡普空监修放心"
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="color: #3498db; margin-bottom: 10px;">😐 中立</div>
+                    <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        "观望中，看后续表现"
+                    </div>
+                    <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px;">
+                        "希望不要氪金太重"
+                    </div>
+                </div>
+                <div>
+                    <div style="color: #e74c3c; margin-bottom: 10px;">👎 差评</div>
+                    <div style="background: rgba(231, 76, 60, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        "等太久了，什么时候公测"
+                    </div>
+                    <div style="background: rgba(231, 76, 60, 0.1); padding: 15px; border-radius: 8px;">
+                        "测试资格太难抢了"
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>📊 《怪物猎人：旅人》渠道数据监控报告</p>
+            <p style="margin-top: 10px;">数据来源：TapTap | B站 | 好游快爆 | 4399</p>
+            <p style="margin-top: 10px; color: #576574;">本报告仅供参考，数据以官方渠道为准</p>
+        </div>
+    </div>
+    
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // 绘制概览图表
+        new Chart(document.getElementById('overviewChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['TapTap', 'B站', '好游快爆', '4399'],
+                datasets: [{
+                    data: [370000, 132000, 132000, 60000],
+                    backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#fff' }
+                    }
+                }
+            }
+        });
+        
+        // 绘制渠道分布图
+        new Chart(document.getElementById('channelDistChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['TapTap', 'B站', '好游快爆', '4399'],
+                datasets: [{
+                    data: [370000, 132000, 132000, 60000],
+                    backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#fff' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
