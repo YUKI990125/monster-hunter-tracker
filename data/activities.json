@@ -1,5 +1,5 @@
 {
-  "last_update": "2026-03-31T19:57:00",
+  "last_update": "2026-04-02T15:35:00",
   "game_name": "怪物猎人：旅人",
   "reward_activities": [
     {
@@ -22,7 +22,7 @@
       "start_date": "2026-02-04",
       "end_date": "2026-02-23",
       "status": "已结束",
-      "description": "TapTap新春专属红包封面派送活动"
+      "description": "TapTap新春专属红包封面派送活动，通过每日签到兑换"
     },
     {
       "id": 3,
@@ -33,23 +33,56 @@
       "start_date": "2026-01-30",
       "end_date": null,
       "status": "已结束",
-      "description": "春节红包封面发放，数量有限领完为止"
+      "description": "春节红包封面发放，数量有限领完为止，通过微信公众号领取"
     }
   ],
   "community_activities": [
     {
       "id": 1,
-      "title": "【已开奖】怪猎旅人社区问卷调研 | 老大我们需要你喵",
+      "title": "🆕 《怪物猎人：旅人》官方创作团招募正式开启！",
       "channel": "TapTap",
-      "url": "https://www.taptap.cn/moment/776470121743912306",
-      "keywords": ["已开奖", "问卷调研"],
-      "start_date": "2026-02-28",
+      "url": "https://www.taptap.cn/app/243984/topic?type=official",
+      "keywords": ["创作团招募", "奖金激励"],
+      "start_date": "2026-04-02",
       "end_date": null,
-      "status": "已开奖",
-      "description": "社区问卷调研活动，奖品为镭射票，获奖者需在4月2日前填写信息"
+      "status": "进行中",
+      "description": "官方创作团招募，提供创作支持、流量扶持及奖金激励"
     },
     {
       "id": 2,
+      "title": "🆕 《怪物猎人：旅人》「启程测试」招募开启！",
+      "channel": "TapTap",
+      "url": "https://www.taptap.cn/app/243984/topic?type=official",
+      "keywords": ["启程测试", "限号删档", "计费测试"],
+      "start_date": "2026-04-02",
+      "end_date": "2026-04-21",
+      "status": "进行中",
+      "description": "限号删档计费测试招募，仅限安卓设备，截止4月21日24点"
+    },
+    {
+      "id": 3,
+      "title": "《怪物猎人：旅人》「启程测试」招募FAQ",
+      "channel": "TapTap",
+      "url": "https://www.taptap.cn/app/243984/topic?type=official",
+      "keywords": ["启程测试", "FAQ"],
+      "start_date": "2026-04-02",
+      "end_date": null,
+      "status": "进行中",
+      "description": "启程测试常见问题解答"
+    },
+    {
+      "id": 4,
+      "title": "【已过期】怪猎旅人社区问卷调研 | 老大我们需要你喵",
+      "channel": "TapTap",
+      "url": "https://www.taptap.cn/app/243984/topic?type=official",
+      "keywords": ["已开奖", "问卷调研"],
+      "start_date": "2026-02-28",
+      "end_date": "2026-04-02",
+      "status": "已过期",
+      "description": "社区问卷调研活动，奖品为镭射票，获奖者需在4月2日前填写信息"
+    },
+    {
+      "id": 5,
       "title": "【已开奖】分享集会所故事，赢好礼",
       "channel": "TapTap",
       "url": "https://www.taptap.cn/app/243984/topic?type=official",
@@ -57,10 +90,10 @@
       "start_date": "2026-02-02",
       "end_date": null,
       "status": "已开奖",
-      "description": "分享集会所故事活动，获奖者需在3月12日前填写信息"
+      "description": "分享集会所故事活动，获奖者需在3月12日前填写信息，包含微信限定红包封面获奖名单"
     },
     {
-      "id": 3,
+      "id": 6,
       "title": "《怪物猎人：旅人》TAPTAP体验团资格已公布！",
       "channel": "TapTap",
       "url": "https://www.taptap.cn/app/243984/topic?type=official",
@@ -68,10 +101,10 @@
       "start_date": "2026-02-03",
       "end_date": null,
       "status": "已开奖",
-      "description": "TapTap体验团资格公布"
+      "description": "TapTap体验团资格公布，需留意短信并加群"
     },
     {
-      "id": 4,
+      "id": 7,
       "title": "【已开奖】老大来投票喵！支持怪猎旅人喵！",
       "channel": "TapTap",
       "url": "https://www.taptap.cn/app/243984/topic?type=official",
@@ -79,7 +112,18 @@
       "start_date": "2025-12-30",
       "end_date": null,
       "status": "已开奖",
-      "description": "投票支持活动，获奖者需在1月26日前填写信息"
+      "description": "TapTap年度游戏大赏投票支持活动，获奖者需在1月26日前填写信息"
+    },
+    {
+      "id": 8,
+      "title": "下一把武器是？「冒险团情报会」新情报公开！",
+      "channel": "TapTap",
+      "url": "https://www.taptap.cn/app/243984/topic?type=official",
+      "keywords": ["情报公开", "新版本"],
+      "start_date": "2026-02-14",
+      "end_date": null,
+      "status": "已结束",
+      "description": "新版本武器预告直播"
     }
   ]
 }

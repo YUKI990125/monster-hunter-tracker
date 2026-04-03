@@ -19,7 +19,8 @@ DATA_DIR = PROJECT_DIR / "data"
 # 渠道URL
 URLS = {
     "taptap": "https://www.taptap.cn/app/243984",
-    "bilibili": "https://gwlrlr.biligame.com/gwlryykq",
+    "bilibili": "https://www.bilibili.com/video/BV1y9ZjBYEoe",  # B站官方视频页面，显示预约数
+    "bilibili_game": "https://www.biligame.com/detail/?id=113695",  # B站游戏中心
     "haoyoukuaibao": "https://m.3839.com/a/148388.htm",
     "4399": "https://www.4399.com/pcgame/game/327065.html"
 }
@@ -98,21 +99,31 @@ def scrape_taptap_stats():
     return stats
 
 def scrape_bilibili_stats():
-    """从B站采集预约数"""
-    stats = {"reserve": 0, "download": 0, "note": "B站暂无预约数据入口"}
+    """从B站采集预约数 - 从视频页面获取"""
+    stats = {"reserve": 0, "download": 0, "note": "B站游戏中心预约数"}
     
+    # 尝试从B站视频页面获取预约数
     html = get_page_content(URLS["bilibili"])
-    if not html:
-        return stats
+    if html:
+        soup = BeautifulSoup(html, 'html.parser')
+        text = soup.get_text()
+        
+        # 查找"XX万人已预约"格式
+        match = re.search(r'(\d+\.?\d*)\s*万?\s*人已预约', text)
+        if match:
+            stats["reserve"] = parse_number(match.group(1))
+            return stats
     
-    soup = BeautifulSoup(html, 'html.parser')
-    text = soup.get_text()
-    
-    # B站预约活动页面可能有预约数
-    match = re.search(r'预约.*?(\d+\.?\d*\s*万?)', text)
-    if match:
-        stats["reserve"] = parse_number(match.group(1))
-        stats["note"] = "来自B站预约活动页"
+    # 备用：尝试B站游戏中心页面
+    html = get_page_content(URLS.get("bilibili_game", ""))
+    if html:
+        soup = BeautifulSoup(html, 'html.parser')
+        text = soup.get_text()
+        
+        match = re.search(r'(\d+\.?\d*)\s*万?\s*人已预约', text)
+        if match:
+            stats["reserve"] = parse_number(match.group(1))
+            return stats
     
     return stats
 

@@ -14,14 +14,14 @@
         
         body {
             font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             min-height: 100vh;
             color: #fff;
             padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
@@ -50,113 +50,75 @@
         .page-header h1 {
             font-size: 2.2em;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .page-header p {
-            color: #95a5a6;
+            color: rgba(255, 255, 255, 0.8);
         }
         
-        /* 情感概览 */
-        .sentiment-overview {
+        .overview-cards {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
         
-        .sentiment-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 30px;
+        .overview-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #2c3e50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .sentiment-card.positive {
-            border-top: 4px solid #2ecc71;
-        }
-        
-        .sentiment-card.neutral {
-            border-top: 4px solid #f39c12;
-        }
-        
-        .sentiment-card.negative {
-            border-top: 4px solid #e74c3c;
-        }
-        
-        .sentiment-card .icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-        
-        .sentiment-card .value {
+        .overview-card .icon {
             font-size: 2.5em;
-            font-weight: bold;
             margin-bottom: 10px;
         }
         
-        .sentiment-card.positive .value { color: #2ecc71; }
-        .sentiment-card.neutral .value { color: #f39c12; }
-        .sentiment-card.negative .value { color: #e74c3c; }
-        
-        .sentiment-card .label {
-            color: #95a5a6;
-            font-size: 1em;
+        .overview-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
         
-        /* 趋势区域 */
-        .trend-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+        .overview-card .label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .overview-card.positive .value { color: #27ae60; }
+        .overview-card.neutral .value { color: #f39c12; }
+        .overview-card.negative .value { color: #e74c3c; }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            color: #2c3e50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
         
-        .trend-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .trend-card h3 {
+        .chart-container h3 {
             margin-bottom: 20px;
             color: #3498db;
         }
         
-        .chart-container {
-            position: relative;
-            height: 300px;
-        }
-        
-        /* 热门话题 */
         .topics-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            color: #2c3e50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .topics-section h3 {
-            margin-bottom: 20px;
-            color: #3498db;
-        }
-        
-        .topics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        
-        .topic-group h4 {
-            color: #f39c12;
             margin-bottom: 15px;
-            font-size: 1em;
+            color: #3498db;
+            font-size: 1.1em;
         }
         
         .topic-tags {
@@ -166,29 +128,19 @@
         }
         
         .topic-tag {
-            background: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-            padding: 8px 15px;
+            background: rgba(52, 152, 219, 0.15);
+            color: #2980b9;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.9em;
+            font-size: 0.95em;
         }
         
-        .topic-tag.positive {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
-        }
-        
-        .topic-tag.negative {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-        }
-        
-        /* 示例评论 */
         .comments-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
             padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #2c3e50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
         .comments-section h3 {
@@ -196,56 +148,35 @@
             color: #3498db;
         }
         
-        .comments-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        .comment-group {
+            margin-bottom: 25px;
         }
         
         .comment-group h4 {
             margin-bottom: 15px;
-            font-size: 1em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
         }
         
-        .comment-group.positive h4 { color: #2ecc71; }
+        .comment-group.positive h4 { color: #27ae60; }
         .comment-group.neutral h4 { color: #f39c12; }
         .comment-group.negative h4 { color: #e74c3c; }
         
         .comment-item {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.03);
+            padding: 12px 15px;
             border-radius: 8px;
-            padding: 15px;
             margin-bottom: 10px;
-            font-size: 0.9em;
-            line-height: 1.5;
-            color: #bdc3c7;
+            line-height: 1.6;
         }
         
-        /* 历史趋势 */
-        .history-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 30px;
-        }
-        
-        .history-section h3 {
-            margin-bottom: 20px;
-            color: #3498db;
-        }
-        
-        .history-chart {
-            height: 250px;
-        }
-        
-        /* 响应式 */
-        @media (max-width: 900px) {
-            .sentiment-overview,
-            .trend-section,
-            .topics-grid,
-            .comments-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 768px) {
+            .overview-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            div[style*="grid-template-columns: 1fr 2fr 1.5fr"] {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
@@ -256,268 +187,145 @@
         
         <div class="page-header">
             <h1>💬 舆情分析</h1>
-            <p>TapTap 评论舆情监控与情感分析</p>
+            <p>TapTap 评论舆情监控</p>
         </div>
         
-        <!-- 情感概览 -->
-        <div class="sentiment-overview">
-            <div class="sentiment-card positive">
+        <!-- 第一行：好评率、中立率、差评率 -->
+        <div class="overview-cards" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="overview-card positive">
                 <div class="icon">👍</div>
                 <div class="value" id="positiveRate">-</div>
                 <div class="label">好评率</div>
             </div>
-            <div class="sentiment-card neutral">
+            <div class="overview-card neutral">
                 <div class="icon">😐</div>
                 <div class="value" id="neutralRate">-</div>
                 <div class="label">中立率</div>
             </div>
-            <div class="sentiment-card negative">
+            <div class="overview-card negative">
                 <div class="icon">👎</div>
                 <div class="value" id="negativeRate">-</div>
                 <div class="label">差评率</div>
             </div>
         </div>
         
-        <!-- 趋势图表 -->
-        <div class="trend-section">
-            <div class="trend-card">
-                <h3>📊 情感分布</h3>
-                <div class="chart-container">
-                    <canvas id="sentimentChart"></canvas>
-                </div>
+        <!-- 第二行：总评价数、情感分布、热门话题 -->
+        <div style="display: grid; grid-template-columns: 1fr 2fr 1.5fr; gap: 20px; margin-bottom: 30px; align-items: stretch;">
+            <div class="overview-card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center;">
+                <div class="icon">📊</div>
+                <div class="value" id="totalComments">-</div>
+                <div class="label">总评价数</div>
             </div>
-            <div class="trend-card">
-                <h3>📈 趋势分析</h3>
-                <div class="chart-container">
-                    <canvas id="trendChart"></canvas>
-                </div>
+            <div class="chart-container" style="margin-bottom: 0;">
+                <h3>📈 情感分布</h3>
+                <canvas id="sentimentChart"></canvas>
             </div>
-        </div>
-        
-        <!-- 热门话题 -->
-        <div class="topics-section">
-            <h3>🔥 热门话题与关键词</h3>
-            <div class="topics-grid">
-                <div class="topic-group">
-                    <h4>✅ 正面关键词</h4>
-                    <div class="topic-tags" id="positiveKeywords">
-                        <!-- 动态加载 -->
-                    </div>
-                </div>
-                <div class="topic-group">
-                    <h4>❌ 负面关键词</h4>
-                    <div class="topic-tags" id="negativeKeywords">
-                        <!-- 动态加载 -->
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top: 20px;">
-                <h4 style="color: #f39c12; margin-bottom: 15px;">🎯 热门话题</h4>
-                <div class="topic-tags" id="hotTopics">
-                    <!-- 动态加载 -->
-                </div>
+            <div class="topics-section" style="margin-bottom: 0;">
+                <h3>🔥 热门话题</h3>
+                <div class="topic-tags" id="hotTopics"></div>
             </div>
         </div>
         
-        <!-- 示例评论 -->
         <div class="comments-section">
-            <h3>📝 评论示例</h3>
-            <div class="comments-grid">
-                <div class="comment-group positive">
-                    <h4>👍 好评示例</h4>
-                    <div id="positiveComments">
-                        <!-- 动态加载 -->
-                    </div>
-                </div>
-                <div class="comment-group neutral">
-                    <h4>😐 中立示例</h4>
-                    <div id="neutralComments">
-                        <!-- 动态加载 -->
-                    </div>
-                </div>
-                <div class="comment-group negative">
-                    <h4>👎 差评示例</h4>
-                    <div id="negativeComments">
-                        <!-- 动态加载 -->
-                    </div>
-                </div>
+            <h3>💬 典型评论</h3>
+            <div class="comment-group positive">
+                <h4>👍 正面评价</h4>
+                <div id="positiveComments"></div>
             </div>
-        </div>
-        
-        <!-- 历史趋势 -->
-        <div class="history-section">
-            <h3>📅 历史舆情趋势</h3>
-            <div class="history-chart">
-                <canvas id="historyChart"></canvas>
+            <div class="comment-group neutral">
+                <h4>😐 中立评价</h4>
+                <div id="neutralComments"></div>
+            </div>
+            <div class="comment-group negative">
+                <h4>👎 负面评价</h4>
+                <div id="negativeComments"></div>
             </div>
         </div>
     </div>
     
     <script>
-        async function loadSentiment() {
-            try {
-                const res = await fetch('data/sentiment.json');
-                const data = await res.json();
-                
-                const latestReport = data.daily_reports?.slice(-1)[0];
-                
-                if (latestReport) {
-                    // 更新概览
-                    document.getElementById('positiveRate').textContent = 
-                        latestReport.summary.positive + '%';
-                    document.getElementById('neutralRate').textContent = 
-                        latestReport.summary.neutral + '%';
-                    document.getElementById('negativeRate').textContent = 
-                        latestReport.summary.negative + '%';
-                    
-                    // 更新关键词
-                    const positiveKeywords = document.getElementById('positiveKeywords');
-                    positiveKeywords.innerHTML = latestReport.positive_keywords?.map(k => 
-                        `<span class="topic-tag positive">${k}</span>`
-                    ).join('') || '<span class="topic-tag">暂无数据</span>';
-                    
-                    const negativeKeywords = document.getElementById('negativeKeywords');
-                    negativeKeywords.innerHTML = latestReport.negative_keywords?.map(k => 
-                        `<span class="topic-tag negative">${k}</span>`
-                    ).join('') || '<span class="topic-tag">暂无数据</span>';
-                    
-                    const hotTopics = document.getElementById('hotTopics');
-                    hotTopics.innerHTML = latestReport.hot_topics?.map(t => 
-                        `<span class="topic-tag">${t}</span>`
-                    ).join('') || '<span class="topic-tag">暂无数据</span>';
-                    
-                    // 更新评论示例
-                    const positiveComments = document.getElementById('positiveComments');
-                    positiveComments.innerHTML = latestReport.sample_comments?.positive?.map(c => 
-                        `<div class="comment-item">${c}</div>`
-                    ).join('') || '<div class="comment-item">暂无数据</div>';
-                    
-                    const neutralComments = document.getElementById('neutralComments');
-                    neutralComments.innerHTML = latestReport.sample_comments?.neutral?.map(c => 
-                        `<div class="comment-item">${c}</div>`
-                    ).join('') || '<div class="comment-item">暂无数据</div>';
-                    
-                    const negativeComments = document.getElementById('negativeComments');
-                    negativeComments.innerHTML = latestReport.sample_comments?.negative?.map(c => 
-                        `<div class="comment-item">${c}</div>`
-                    ).join('') || '<div class="comment-item">暂无数据</div>';
-                    
-                    // 情感分布饼图
-                    new Chart(document.getElementById('sentimentChart'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['好评', '中立', '差评'],
-                            datasets: [{
-                                data: [
-                                    latestReport.summary.positive,
-                                    latestReport.summary.neutral,
-                                    latestReport.summary.negative
-                                ],
-                                backgroundColor: ['#2ecc71', '#f39c12', '#e74c3c'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: { color: '#fff' }
-                                }
-                            }
-                        }
-                    });
-                }
-                
-                // 历史趋势图
-                const history = data.daily_reports || [];
-                if (history.length > 0) {
-                    new Chart(document.getElementById('historyChart'), {
-                        type: 'line',
-                        data: {
-                            labels: history.map(h => h.date),
-                            datasets: [
-                                {
-                                    label: '好评率',
-                                    data: history.map(h => h.summary.positive),
-                                    borderColor: '#2ecc71',
-                                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                                    fill: false,
-                                    tension: 0.4
-                                },
-                                {
-                                    label: '中立率',
-                                    data: history.map(h => h.summary.neutral),
-                                    borderColor: '#f39c12',
-                                    backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                                    fill: false,
-                                    tension: 0.4
-                                },
-                                {
-                                    label: '差评率',
-                                    data: history.map(h => h.summary.negative),
-                                    borderColor: '#e74c3c',
-                                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                                    fill: false,
-                                    tension: 0.4
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                                y: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-                            },
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                    labels: { color: '#fff' }
-                                }
-                            }
-                        }
-                    });
-                }
-                
-                // 趋势分析（简化）
-                const trend = data.history_summary?.trend || '稳定';
-                const trendData = {
-                    '上升': [30, 40, 50, 55, 60],
-                    '下降': [70, 65, 55, 50, 45],
-                    '稳定': [50, 52, 51, 53, 52]
-                };
-                
-                new Chart(document.getElementById('trendChart'), {
-                    type: 'line',
-                    data: {
-                        labels: ['5天前', '4天前', '3天前', '2天前', '昨天'],
-                        datasets: [{
-                            label: '好评率趋势',
-                            data: trendData[trend] || trendData['稳定'],
-                            borderColor: '#3498db',
-                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        }]
+        const sentimentData = {
+            "daily_reports": [
+                {
+                    "date": "2026-04-02",
+                    "summary": {
+                        "positive": 60,
+                        "neutral": 20,
+                        "negative": 20,
+                        "total_comments": 903
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                            y: { ticks: { color: '#95a5a6' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-                        },
-                        plugins: {
-                            legend: { display: false }
+                    "hot_topics": [
+                        "移动端便利性",
+                        "操作优化",
+                        "商业氪金机制",
+                        "情怀与社交",
+                        "画面与生态"
+                    ],
+                    "sample_comments": {
+                        "positive": [
+                            "移动端填补了碎片化时间的空白，解决了主机/PC没时间玩的问题",
+                            "操作简化了（一键登龙、一键见切），手机上战斗爽感很足",
+                            "移植了《世界》的动作模组和开放无缝地图，生态还原度高"
+                        ],
+                        "neutral": [
+                            "快餐化与简化的矛盾，取消磨刀、增加血条降低了门槛但失去策略感",
+                            "三星期待，建议买断制或月卡制避免逼氪"
+                        ],
+                        "negative": [
+                            "腾讯给IP招黑，质量令人担忧",
+                            "角色绑定武器装备、抽卡出角色破坏了怪猎的纯粹性"
+                        ]
+                    }
+                }
+            ],
+            "history_summary": {
+                "trend": "谨慎乐观"
+            }
+        };
+        
+        function loadSentiment() {
+            const latest = sentimentData.daily_reports.slice(-1)[0];
+            const summary = latest.summary;
+            
+            // 概览
+            document.getElementById('positiveRate').textContent = summary.positive + '%';
+            document.getElementById('neutralRate').textContent = summary.neutral + '%';
+            document.getElementById('negativeRate').textContent = summary.negative + '%';
+            document.getElementById('totalComments').textContent = summary.total_comments;
+            
+            // 情感分布图
+            const ctx = document.getElementById('sentimentChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['正面', '中立', '负面'],
+                    datasets: [{
+                        data: [summary.positive, summary.neutral, summary.negative],
+                        backgroundColor: ['#27ae60', '#f39c12', '#e74c3c'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
                         }
                     }
-                });
-                
-            } catch (error) {
-                console.error('数据加载失败:', error);
-            }
+                }
+            });
+            
+            // 热门话题
+            document.getElementById('hotTopics').innerHTML = latest.hot_topics
+                .map(topic => `<span class="topic-tag">${topic}</span>`).join('');
+            
+            // 评论
+            document.getElementById('positiveComments').innerHTML = latest.sample_comments.positive
+                .map(c => `<div class="comment-item">${c}</div>`).join('');
+            document.getElementById('neutralComments').innerHTML = latest.sample_comments.neutral
+                .map(c => `<div class="comment-item">${c}</div>`).join('');
+            document.getElementById('negativeComments').innerHTML = latest.sample_comments.negative
+                .map(c => `<div class="comment-item">${c}</div>`).join('');
         }
         
         loadSentiment();

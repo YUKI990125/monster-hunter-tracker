@@ -1,34 +1,33 @@
 {
-  "last_update": "2026-03-31T17:50:00",
+  "last_update": "2026-04-03T10:10:00",
   "game_name": "怪物猎人：旅人",
   "current": {
     "taptap": {
-      "reserve": 370000,
-      "download": 0,
-      "update_time": "2026-03-31T18:25:00",
+      "reserve": 380000,
+      "follow": 370000,
       "rating": 7.3,
-      "follow": 360000
+      "reviews": 905,
+      "rank": "预约榜 #4",
+      "update_time": "2026-04-03T10:10:00"
     },
     "bilibili": {
-      "reserve": 132000,
-      "download": 0,
-      "update_time": "2026-03-31T18:32:00",
-      "note": "B站游戏中心预约数"
+      "reserve": 141000,
+      "rating": 9.3,
+      "rank": "游戏预约榜 #2",
+      "update_time": "2026-04-03T10:10:00"
     },
     "haoyoukuaibao": {
-      "reserve": 132000,
-      "download": 0,
-      "update_time": "2026-03-31T18:28:00",
-      "rating": 8.2,
-      "reviews": 525
+      "reserve": 137000,
+      "rating": 8.3,
+      "rank": "新游期待榜 #2",
+      "update_time": "2026-04-03T10:10:00"
     },
     "4399": {
-      "reserve": 60000,
-      "download": 0,
-      "update_time": "2026-03-31T17:50:00",
-      "note": "4399关注人数（非预约数）",
+      "reserve": 73000,
       "rating": 9.2,
-      "rank": "预约榜 Top57"
+      "rank": "预约榜 Top3",
+      "note": "4399预约人数",
+      "update_time": "2026-04-03T10:10:00"
     }
   },
   "history": [
@@ -39,11 +38,35 @@
       "haoyoukuaibao_reserve": 132000,
       "reserve_4399": 60000,
       "total_reserve": 694000
+    },
+    {
+      "date": "2026-04-01",
+      "taptap_reserve": 370000,
+      "bilibili_reserve": 132000,
+      "haoyoukuaibao_reserve": 132000,
+      "reserve_4399": 60000,
+      "total_reserve": 694000
+    },
+    {
+      "date": "2026-04-02",
+      "taptap_reserve": 380000,
+      "bilibili_reserve": 141000,
+      "haoyoukuaibao_reserve": 134000,
+      "reserve_4399": 70000,
+      "total_reserve": 725000
+    },
+    {
+      "date": "2026-04-03",
+      "taptap_reserve": 380000,
+      "bilibili_reserve": 141000,
+      "haoyoukuaibao_reserve": 137000,
+      "reserve_4399": 73000,
+      "total_reserve": 731000
     }
   ],
   "growth_rate": {
-    "daily": 0,
-    "weekly": 0,
-    "monthly": 0
+    "daily": 0.8,
+    "weekly": 5.3,
+    "monthly": 5.3
   }
 }

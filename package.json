@@ -1,0 +1,13 @@
+{
+  "name": "monster-hunter-tracker",
+  "version": "1.0.0",
+  "description": "怪物猎人：旅人 渠道数据监控",
+  "scripts": {
+    "scrape": "node scripts/scrape.js",
+    "build": "node scripts/build.js",
+    "dev": "npx serve ."
+  },
+  "dependencies": {
+    "agent-browser": "^1.0.0"
+  }
+}

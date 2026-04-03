@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
         
-        /* 返回按钮 */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -42,7 +41,6 @@
             background: rgba(255, 255, 255, 0.2);
         }
         
-        /* 页面标题 */
         .page-header {
             text-align: center;
             margin-bottom: 40px;
@@ -61,7 +59,6 @@
             color: #95a5a6;
         }
         
-        /* 时间线 */
         .timeline {
             position: relative;
             max-width: 900px;
@@ -115,16 +112,18 @@
         }
         
         .timeline-content {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
         .timeline-content:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 1);
             transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .timeline-content.confirmed {
@@ -137,6 +136,17 @@
         
         .timeline-content.none {
             border-left: 4px solid #95a5a6;
+        }
+        
+        .timeline-content.new {
+            border-left: 4px solid #e74c3c;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(231, 76, 60, 0.5); }
         }
         
         .node-name {
@@ -165,8 +175,8 @@
         }
         
         .source-tag {
-            background: rgba(52, 152, 219, 0.2);
-            color: #3498db;
+            background: rgba(52, 152, 219, 0.15);
+            color: #2980b9;
             padding: 4px 12px;
             border-radius: 15px;
             font-size: 0.85em;
@@ -181,21 +191,29 @@
         }
         
         .status-tag.confirmed {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
         }
         
         .status-tag.pending {
-            background: rgba(243, 156, 18, 0.2);
-            color: #f39c12;
+            background: rgba(243, 156, 18, 0.15);
+            color: #d68910;
         }
         
         .status-tag.none {
-            background: rgba(149, 165, 166, 0.2);
-            color: #95a5a6;
+            background: rgba(149, 165, 166, 0.15);
+            color: #7f8c8d;
         }
         
-        /* 响应式 */
+        .new-badge {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 8px;
+        }
+        
         @media (max-width: 768px) {
             .timeline::before {
                 left: 20px;
@@ -226,78 +244,86 @@
             <p>游戏关键节点时间线一览</p>
         </div>
         
-        <div class="timeline" id="timeline">
-            <!-- 动态加载 -->
-        </div>
+        <div class="timeline" id="timeline"></div>
     </div>
     
     <script>
-        async function loadNodes() {
-            try {
-                const res = await fetch('data/nodes.json');
-                const data = await res.json();
+        const nodesData = {
+            "last_update": "2026-04-02T16:25:00",
+            "nodes": [
+                {"name": "预约开启", "date": "2024-02-06", "status": "已确认", "source": ["好游快爆"], "note": "正式开启预约"},
+                {"name": "商标曝光", "date": "2024-09-06", "status": "已确认", "source": ["好游快爆"], "note": "腾讯注册怪物猎人新商标曝光"},
+                {"name": "官网上线", "date": "2024-11-13", "status": "已确认", "source": ["官网", "好游快爆"], "note": "官网上线，预告片发布"},
+                {"name": "获得版号", "date": "2024-12-24", "status": "已确认", "source": ["好游快爆"], "note": "国服获得版号"},
+                {"name": "TGS东京电玩展", "date": "2025-08-25", "status": "已确认", "source": ["好游快爆", "IGN中国"], "note": "参展东京电玩展，现场提供首次试玩"},
+                {"name": "首测实机预告发布", "date": "2025-09-25", "status": "已确认", "source": ["17173", "好游快爆"], "note": "发布首支实机预告片"},
+                {"name": "一测招募开启", "date": "2025-09-25", "status": "已确认", "source": ["好游快爆", "17173"], "note": "首测资格招募开启"},
+                {"name": "一测预告", "date": "2025-10-31", "status": "已确认", "source": ["好游快爆", "游民星空"], "note": "预告将于11月14日开启限量保密首测"},
+                {"name": "一测预下载", "date": "2025-11-13", "status": "已确认", "source": ["好游快爆"], "note": "测试服预下载开启"},
+                {"name": "一测开启", "date": "2025-11-14", "time": "10:00", "status": "已确认", "source": ["好游快爆", "TapTap", "B站"], "note": "限量保密首测正式开启"},
+                {"name": "一测结束", "date": "2025-11-20", "time": "18:00", "status": "已确认", "source": ["好游快爆"], "note": "限量保密首测结束"},
+                {"name": "体验团一期招募", "date": "2025-12-18", "time": "11:00", "status": "已确认", "source": ["好游快爆", "4399"], "note": "体验团招募开启"},
+                {"name": "体验团一期结束", "date": "2026-01-18", "status": "已确认", "source": ["好游快爆", "MSN"], "note": "体验团招募结束"},
+                {"name": "TapTap体验团资格公布", "date": "2026-02-03", "status": "已确认", "source": ["TapTap"], "note": "TapTap体验团资格公布"},
+                {"name": "二测招募开启", "date": "2026-02-04", "time": "11:00", "status": "已确认", "source": ["好游快爆", "4399"], "note": "第二期体验团招募开启"},
+                {"name": "研发进度视频发布", "date": "2026-02-14", "status": "已确认", "source": ["好游快爆", "TapTap"], "note": "曝光最新研发进度视频"},
+                {"name": "二测招募结束", "date": "2026-03-01", "time": "23:59", "status": "已确认", "source": ["好游快爆", "4399"], "note": "第二期体验团招募结束"},
+                {"name": "二测资格公布", "date": "2026-03-09", "status": "已确认", "source": ["好游快爆"], "note": "公布第二期体验团资格获奖名单"},
+                {"name": "🆕 启程测试招募开启", "date": "2026-04-02", "status": "已确认", "source": ["TapTap", "好游快爆"], "note": "限号删档计费测试招募开启，仅限安卓，截止4月21日24点", "isNew": true},
+                {"name": "启程测试开启", "date": null, "status": "待定", "source": [], "note": "限号删档计费测试，仅限安卓设备"},
+                {"name": "公测定档", "date": null, "status": "待定", "source": []},
+                {"name": "前瞻直播", "date": null, "status": "暂无", "source": []},
+                {"name": "预下载", "date": null, "status": "待定", "source": []},
+                {"name": "公测开启", "date": null, "status": "待定", "source": []}
+            ]
+        };
+        
+        function loadNodes() {
+            const timeline = document.getElementById('timeline');
+            let nodes = nodesData.nodes || [];
+            
+            // 按日期排序（待定的放最后）
+            nodes.sort((a, b) => {
+                if (!a.date && !b.date) return 0;
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                return new Date(a.date) - new Date(b.date);
+            });
+            
+            timeline.innerHTML = nodes.map(node => {
+                const name = node.name || '未知节点';
+                const date = node.date || '待定';
+                const time = node.time || '';
+                const sources = node.source || [];
+                const status = node.status || '待定';
+                const note = node.note || '';
+                const isNew = node.isNew;
                 
-                const timeline = document.getElementById('timeline');
-                const nodes = data.nodes || {};
+                let statusClass = 'pending';
+                if (status === '已确认') statusClass = 'confirmed';
+                if (status === '暂无') statusClass = 'none';
                 
-                // 动态获取节点顺序（按数据中实际存在的键排序）
-                // 优先顺序：预约 -> 测试组（一测、二测等）-> 公测相关
-                const priorityOrder = [
-                    '预约开启',
-                    '一测招募', '一测开启', '一测结束',
-                    '二测招募', '二测开启', '二测结束',
-                    '三测招募', '三测开启', '三测结束',
-                    '公测首发定档', '前瞻直播', '预注册', '预下载', '公测开启'
-                ];
+                const contentClass = isNew ? `timeline-content ${statusClass} new` : `timeline-content ${statusClass}`;
+                const displayName = name.replace('🆕 ', '').replace('🆕', '');
+                const newBadge = isNew ? '<span class="new-badge">NEW</span>' : '';
                 
-                // 获取数据中存在的所有节点键
-                const existingKeys = Object.keys(nodes);
-                
-                // 按优先顺序排列，同时包含不在优先列表中的节点
-                const order = priorityOrder.filter(key => existingKeys.includes(key));
-                
-                // 添加不在优先列表中的其他节点（如未来可能有四测等）
-                existingKeys.forEach(key => {
-                    if (!order.includes(key)) {
-                        order.push(key);
-                    }
-                });
-                
-                timeline.innerHTML = order.map(key => {
-                    const node = nodes[key] || {};
-                    const date = node.date || '待定';
-                    const time = node.time || '';
-                    const sources = node.source || [];
-                    const status = node.status || '待定';
-                    const note = node.note || '';
-                    
-                    let statusClass = 'pending';
-                    if (status === '已确认') statusClass = 'confirmed';
-                    if (status === '暂无') statusClass = 'none';
-                    
-                    return `
-                        <div class="timeline-item">
-                            <div class="timeline-content ${statusClass}">
-                                <div class="node-name">${key}</div>
-                                <div class="node-date">${date !== '待定' ? date : '待定'}</div>
-                                ${time ? `<div class="node-time">时间：${time}</div>` : ''}
-                                ${note ? `<div class="node-note" style="color: #7f8c8d; font-size: 0.9em; margin-top: 5px;">${note}</div>` : ''}
-                                ${sources.length > 0 ? `
-                                    <div class="node-sources">
-                                        ${sources.map(s => `<span class="source-tag">${s}</span>`).join('')}
-                                    </div>
-                                ` : ''}
-                                <span class="status-tag ${statusClass}">${status}</span>
-                            </div>
+                return `
+                    <div class="timeline-item">
+                        <div class="${contentClass}">
+                            <div class="node-name">${displayName}${newBadge}</div>
+                            <div class="node-date">${date !== '待定' ? date : '待定'}</div>
+                            ${time ? `<div class="node-time">时间：${time}</div>` : ''}
+                            ${note ? `<div class="node-note" style="color: #7f8c8d; font-size: 0.9em; margin-top: 5px;">${note}</div>` : ''}
+                            ${sources.length > 0 ? `
+                                <div class="node-sources">
+                                    ${sources.map(s => `<span class="source-tag">${s}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                            <span class="status-tag ${statusClass}">${status}</span>
                         </div>
-                    `;
-                }).join('');
-                
-            } catch (error) {
-                console.error('数据加载失败:', error);
-                document.getElementById('timeline').innerHTML = 
-                    '<p style="text-align: center; color: #e74c3c;">数据加载失败</p>';
-            }
+                    </div>
+                `;
+            }).join('');
         }
         
         loadNodes();
