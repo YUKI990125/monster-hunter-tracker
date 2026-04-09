@@ -1,7 +1,69 @@
 {
   "records": [
-    { "date": "2026-03-31", "taptap": 370000, "bilibili": 132000, "haoyoukuaibao": 132000, "4399": 60000 },
-    { "date": "2026-04-01", "taptap": 370000, "bilibili": 132000, "haoyoukuaibao": 132000, "4399": 60000 },
-    { "date": "2026-04-02", "taptap": 380000, "bilibili": 141000, "haoyoukuaibao": 134000, "4399": 70000 }
+    {
+      "4399": 60000,
+      "date": "2026-03-31",
+      "taptap": 370000,
+      "bilibili": 132000,
+      "haoyoukuaibao": 132000
+    },
+    {
+      "4399": 60000,
+      "date": "2026-04-01",
+      "taptap": 370000,
+      "bilibili": 132000,
+      "haoyoukuaibao": 132000
+    },
+    {
+      "4399": 70000,
+      "date": "2026-04-02",
+      "taptap": 380000,
+      "bilibili": 141000,
+      "haoyoukuaibao": 134000
+    },
+    {
+      "4399": 71345,
+      "date": "2026-04-04",
+      "taptap": 396784,
+      "bilibili": 151276,
+      "haoyoukuaibao": 140765
+    },
+    {
+      "4399": 71345,
+      "date": "2026-04-05",
+      "taptap": 396784,
+      "bilibili": 151693,
+      "haoyoukuaibao": 142934,
+      "note": "修正异常下降数据"
+    },
+    {
+      "4399": 71342,
+      "date": "2026-04-06",
+      "taptap": 397441,
+      "bilibili": 153105,
+      "haoyoukuaibao": 144379
+    },
+    {
+      "4399": 72285,
+      "date": "2026-04-07",
+      "taptap": 400396,
+      "bilibili": 154508,
+      "haoyoukuaibao": 146247
+    },
+    {
+      "4399": 73305,
+      "date": "2026-04-08",
+      "taptap": 406442,
+      "bilibili": 155574,
+      "haoyoukuaibao": 147039
+    },
+    {
+      "4399": 73305,
+      "date": "2026-04-09",
+      "taptap": 406442,
+      "bilibili": 156000,
+      "haoyoukuaibao": 147039,
+      "note": "修正异常下降数据"
+    }
   ]
 }

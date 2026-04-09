@@ -206,6 +206,38 @@ def calculate_growth_rates(history):
         "monthly": monthly_growth
     }
 
+def validate_reserve_data(new_value, old_value, tolerance=0.05):
+    """
+    验证预约数据的合理性
+    预约数是累计值，不应该下降（除非在容差范围内，可能是精度问题）
+    
+    Args:
+        new_value: 新采集的值
+        old_value: 上次的值
+        tolerance: 容差比例，默认5%（考虑精度误差）
+    
+    Returns:
+        (validated_value, is_valid): 验证后的值和是否有效
+    """
+    if old_value == 0:
+        return new_value, True
+    
+    # 计算变化比例
+    change_ratio = (new_value - old_value) / old_value
+    
+    # 如果新值大于旧值，正常增长
+    if new_value >= old_value:
+        return new_value, True
+    
+    # 如果下降幅度在容差范围内（可能是精度问题），保留旧值
+    if abs(change_ratio) <= tolerance:
+        print(f"      ⚠️ 检测到小幅下降 ({change_ratio*100:.2f}%)，可能是精度问题，保留旧值")
+        return old_value, False
+    
+    # 下降幅度过大，保留旧值并警告
+    print(f"      ⚠️ 检测到异常下降 ({change_ratio*100:.2f}%)，保留旧值，请人工确认")
+    return old_value, False
+
 def collect_stats():
     """采集统计数据主函数"""
     # 读取现有数据
@@ -221,18 +253,29 @@ def collect_stats():
             "growth_rate": {}
         }
     
+    # 获取旧数据用于验证
+    old_data = data.get("current", {})
+    old_taptap = old_data.get("taptap", {}).get("reserve", 0)
+    old_bilibili = old_data.get("bilibili", {}).get("reserve", 0)
+    old_haoyoukuaibao = old_data.get("haoyoukuaibao", {}).get("reserve", 0)
+    old_4399 = old_data.get("4399", {}).get("reserve", 0)
+    
     # 采集各渠道数据
     print("   正在采集TapTap数据...")
     taptap = scrape_taptap_stats()
+    taptap["reserve"], _ = validate_reserve_data(taptap["reserve"], old_taptap)
     
     print("   正在采集B站数据...")
     bilibili = scrape_bilibili_stats()
+    bilibili["reserve"], _ = validate_reserve_data(bilibili["reserve"], old_bilibili)
     
     print("   正在采集好游快爆数据...")
     haoyoukuaibao = scrape_haoyoukuaibao_stats()
+    haoyoukuaibao["reserve"], _ = validate_reserve_data(haoyoukuaibao["reserve"], old_haoyoukuaibao)
     
     print("   正在采集4399数据...")
     game_4399 = scrape_4399_stats()
+    game_4399["reserve"], _ = validate_reserve_data(game_4399["reserve"], old_4399)
     
     now = datetime.now()
     

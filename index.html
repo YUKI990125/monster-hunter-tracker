@@ -283,7 +283,7 @@
         <!-- 头部 -->
         <header class="header">
             <h1>🐉 怪物猎人：旅人</h1>
-            <div class="subtitle">渠道数据自动化监控平台</div>
+            <div class="subtitle">外渠内容渠道数据自动化监控平台</div>
             <div class="update-time" id="updateTime">数据更新时间：加载中...</div>
         </header>
         
@@ -347,7 +347,7 @@
             <div class="module-card stats" onclick="goToPage('stats.html')">
                 <div class="module-icon">📊</div>
                 <h2>数据统计</h2>
-                <p>各渠道预约/下载数据追踪，支持 TapTap、B站、好游快爆、4399 多渠道数据采集与增长率分析</p>
+                <p>各外渠内容渠道预约/下载数据追踪，支持 TapTap、B站、好游快爆、4399 多渠道数据采集与增长率分析</p>
                 <div class="module-stats">
                     <div class="stat-item">
                         <div class="value" id="taptapReserve">-</div>
@@ -377,7 +377,7 @@
             <div class="module-card activities" onclick="goToPage('activities.html')">
                 <div class="module-icon">🎁</div>
                 <h2>活动追踪</h2>
-                <p>各渠道论坛活动采集，包括有奖活动和社区活动</p>
+                <p>各外渠内容渠道论坛活动采集，包括有奖活动和社区活动</p>
                 <div class="module-stats">
                     <div class="stat-item">
                         <div class="value" id="rewardActivities">-</div>
@@ -445,16 +445,36 @@
         };
         
         const statsData = {
-            "last_update": "2026-04-03T10:10:00",
-            "game_name": "怪物猎人：旅人",
-            "current": {
-                "taptap": {"reserve": 380000, "rating": 7.3, "follow": 370000, "reviews": 905},
-                "bilibili": {"reserve": 141000, "rating": 9.3},
-                "haoyoukuaibao": {"reserve": 137000, "rating": 8.3, "rank": "新游期待榜 #2"},
-                "4399": {"reserve": 73000, "rating": 9.2, "rank": "预约榜 Top3"}
-            },
-            "growth_rate": {"daily": 0.8}
-        };
+          "last_update": "2026-04-09T11:29:00.000Z",
+          "game_name": "怪物猎人：旅人",
+          "current": {
+                    "taptap": {
+                              "reserve": 406442,
+                              "follow": 390000,
+                              "rating": 7.3,
+                              "reviews": 931,
+                              "rank": "预约榜 #21"
+                    },
+                    "bilibili": {
+                              "reserve": 156000,
+                              "rating": 9.3,
+                              "rank": "预约榜 #6"
+                    },
+                    "haoyoukuaibao": {
+                              "reserve": 147039,
+                              "rating": 8.3,
+                              "rank": "新游期待榜 #7"
+                    },
+                    "4399": {
+                              "reserve": 73305,
+                              "rating": 9.2,
+                              "rank": "预约榜 Top7"
+                    }
+          },
+          "growth_rate": {
+                    "daily": 0.05
+          }
+};
         
         const activitiesData = {
             "last_update": "2026-04-02T16:25:00",

@@ -265,8 +265,8 @@
         
         <div class="page-header">
             <h1>📊 数据统计</h1>
-            <p>各渠道预约/关注数据追踪</p>
-            <div class="update-time">最后更新：2026-04-03 10:10</div>
+            <p>各外渠内容渠道预约/关注数据追踪</p>
+            <div class="update-time" id="updateTime">最后更新：2026-04-09 10:02</div>
         </div>
         
         <div class="stats-grid">
@@ -274,23 +274,23 @@
                 <h3>📱 TapTap</h3>
                 <div class="stat-item">
                     <span class="stat-label">预约数</span>
-                    <span class="stat-value">38万 <span class="growth-badge">↑</span></span>
+                    <span class="stat-value" id="taptapReserve">40.0万 <span class="growth-badge">↑</span></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">关注数</span>
-                    <span class="stat-value">37万</span>
+                    <span class="stat-value" id="taptapFollow">39.1万</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">评分</span>
-                    <span class="stat-value">7.3</span>
+                    <span class="stat-value" id="taptapRating">7.3</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">评价数</span>
-                    <span class="stat-value">904</span>
+                    <span class="stat-value" id="taptapReviews">935</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">排名</span>
-                    <span class="stat-value" style="color: #e74c3c;">预约榜 #4 ↑</span>
+                    <span class="stat-value" id="taptapRank" style="color: #e74c3c;">预约榜 #26</span>
                 </div>
             </div>
             
@@ -298,15 +298,15 @@
                 <h3>📺 B站游戏中心</h3>
                 <div class="stat-item">
                     <span class="stat-label">预约数</span>
-                    <span class="stat-value">14.1万 <span class="growth-badge">↑</span></span>
+                    <span class="stat-value" id="biliReserve">15.5万 <span class="growth-badge">↑</span></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">评分</span>
-                    <span class="stat-value">9.3</span>
+                    <span class="stat-value" id="biliRating">9.3</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">排名</span>
-                    <span class="stat-value" style="color: #e74c3c;">游戏预约榜 #2</span>
+                    <span class="stat-value" id="biliRank" style="color: #e74c3c;">预约榜 #6</span>
                 </div>
             </div>
             
@@ -314,15 +314,15 @@
                 <h3>🎮 好游快爆</h3>
                 <div class="stat-item">
                     <span class="stat-label">预约数</span>
-                    <span class="stat-value">13.7万 <span class="growth-badge">↑</span></span>
+                    <span class="stat-value" id="hykbReserve">14.6万 <span class="growth-badge">↑</span></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">评分</span>
-                    <span class="stat-value">8.3</span>
+                    <span class="stat-value" id="hykbRating">8.3</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">排名</span>
-                    <span class="stat-value" style="color: #e74c3c;">新游期待榜 #2 ↑</span>
+                    <span class="stat-value" id="hykbRank" style="color: #e74c3c;">新游期待榜 #5</span>
                 </div>
             </div>
             
@@ -330,15 +330,15 @@
                 <h3>🕹️ 4399</h3>
                 <div class="stat-item">
                     <span class="stat-label">预约数</span>
-                    <span class="stat-value">7.3万+</span>
+                    <span class="stat-value" id="web4399Reserve">7.2万+</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">评分</span>
-                    <span class="stat-value">9.2</span>
+                    <span class="stat-value" id="web4399Rating">9.2</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">排名</span>
-                    <span class="stat-value" style="color: #e74c3c;">预约榜 Top3 ↑</span>
+                    <span class="stat-value" id="web4399Rank" style="color: #e74c3c;">预约榜 Top7</span>
                 </div>
             </div>
         </div>
@@ -346,38 +346,38 @@
         <!-- 图表行：环形图 + 漏斗图 -->
         <div class="charts-row">
             <div class="chart-container">
-                <h3>🍩 渠道数据占比</h3>
+                <h3>🍩 外渠内容渠道数据占比</h3>
                 <canvas id="doughnutChart"></canvas>
             </div>
             
             <div class="chart-container">
-                <h3>📊 整体预约增长率</h3>
+                <h3>📊 外渠内容渠道的整体预约增长率</h3>
                 <div class="funnel-container">
                     <div class="funnel-item">
                         <div class="funnel-label">今日</div>
                         <div class="funnel-bar" style="width: 100%; background: linear-gradient(90deg, #27ae60, #2ecc71);">
-                            +0.6万
+                            +0.7万
                         </div>
-                        <div class="funnel-value">0.8%</div>
+                        <div class="funnel-value">0.9%</div>
                     </div>
                     <div class="funnel-item">
                         <div class="funnel-label">本周</div>
                         <div class="funnel-bar" style="width: 85%; background: linear-gradient(90deg, #3498db, #5dade2);">
-                            +5.8万
+                            +7.9万
                         </div>
-                        <div class="funnel-value">8.6%</div>
+                        <div class="funnel-value">11.4%</div>
                     </div>
                     <div class="funnel-item">
                         <div class="funnel-label">本月</div>
                         <div class="funnel-bar" style="width: 65%; background: linear-gradient(90deg, #9b59b6, #a569bd);">
-                            +13.1万
+                            +7.9万
                         </div>
-                        <div class="funnel-value">21.8%</div>
+                        <div class="funnel-value">11.4%</div>
                     </div>
                     <div class="funnel-item">
                         <div class="funnel-label">总预约</div>
                         <div class="funnel-bar" style="width: 50%; background: linear-gradient(90deg, #f39c12, #f1c40f);">
-                            73.1万
+                            77.3万
                         </div>
                         <div class="funnel-value">-</div>
                     </div>
@@ -402,52 +402,112 @@
                         <th>合计</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="historyTable">
                     <tr class="highlight-row">
-                        <td class="date-col">2026-04-03</td>
-                        <td>38万</td>
-                        <td class="growth-zero">-</td>
-                        <td>14.1万</td>
-                        <td class="growth-zero">-</td>
-                        <td>13.7万</td>
-                        <td class="growth-up">↑ 2.2%</td>
+                        <td class="date-col">2026-04-09</td>
+                        <td>40.6万</td>
+                        <td class="growth-neutral">- 0.0%</td>
+                        <td>15.6万</td>
+                        <td class="growth-up">↑ 0.3%</td>
+                        <td>14.7万</td>
+                        <td class="growth-neutral">- 0.0%</td>
                         <td>7.3万</td>
-                        <td class="growth-up">↑ 4.3%</td>
-                        <td class="total-col">73.1万</td>
+                        <td class="growth-neutral">- 0.0%</td>
+                        <td class="total-col">78.3万</td>
+                    </tr>
+                    <tr>
+                        <td class="date-col">2026-04-08</td>
+                        <td>40.6万</td>
+                        <td class="growth-up">↑ 1.5%</td>
+                        <td>15.6万</td>
+                        <td class="growth-up">↑ 0.6%</td>
+                        <td>14.7万</td>
+                        <td class="growth-up">↑ 0.7%</td>
+                        <td>7.3万</td>
+                        <td class="growth-up">↑ 1.4%</td>
+                        <td class="total-col">78.2万</td>
+                    </tr>
+                    <tr>
+                        <td class="date-col">2026-04-07</td>
+                        <td>40.0万</td>
+                        <td class="growth-up">↑ 0.7%</td>
+                        <td>15.5万</td>
+                        <td class="growth-up">↑ 0.9%</td>
+                        <td>14.6万</td>
+                        <td class="growth-up">↑ 1.3%</td>
+                        <td>7.2万</td>
+                        <td class="growth-up">↑ 1.3%</td>
+                        <td class="total-col">77.3万</td>
+                    </tr>
+                    <tr>
+                        <td class="date-col">2026-04-06</td>
+                        <td>39.7万</td>
+                        <td class="growth-up">↑ 1.2%</td>
+                        <td>15.3万</td>
+                        <td class="growth-up">↑ 0.9%</td>
+                        <td>14.4万</td>
+                        <td class="growth-up">↑ 1.0%</td>
+                        <td>7.1万</td>
+                        <td class="growth-up">↑ 1.0%</td>
+                        <td class="total-col">76.6万</td>
+                    </tr>
+                    <tr>
+                        <td class="date-col">2026-04-05</td>
+                        <td>39.7万</td>
+                        <td class="growth-neutral">- 0.0%</td>
+                        <td>15.2万</td>
+                        <td class="growth-up">↑ 0.3%</td>
+                        <td>14.3万</td>
+                        <td class="growth-up">↑ 1.5%</td>
+                        <td>7.1万</td>
+                        <td class="growth-neutral">- 0.0%</td>
+                        <td class="total-col">76.3万</td>
+                    </tr>
+                    <tr>
+                        <td class="date-col">2026-04-04</td>
+                        <td>39.7万</td>
+                        <td class="growth-up">↑ 4.4%</td>
+                        <td>15.1万</td>
+                        <td class="growth-up">↑ 7.1%</td>
+                        <td>14.1万</td>
+                        <td class="growth-up">↑ 5.2%</td>
+                        <td>7.1万</td>
+                        <td class="growth-up">↑ 1.4%</td>
+                        <td class="total-col">76.0万</td>
                     </tr>
                     <tr>
                         <td class="date-col">2026-04-02</td>
-                        <td>38万</td>
+                        <td>38.0万</td>
                         <td class="growth-up">↑ 2.7%</td>
                         <td>14.1万</td>
                         <td class="growth-up">↑ 6.8%</td>
                         <td>13.4万</td>
                         <td class="growth-up">↑ 1.5%</td>
-                        <td>7万</td>
+                        <td>7.0万</td>
                         <td class="growth-up">↑ 16.7%</td>
                         <td class="total-col">72.5万</td>
                     </tr>
                     <tr>
                         <td class="date-col">2026-04-01</td>
-                        <td>37万</td>
+                        <td>37.0万</td>
                         <td class="growth-zero">-</td>
                         <td>13.2万</td>
                         <td class="growth-zero">-</td>
                         <td>13.2万</td>
                         <td class="growth-zero">-</td>
-                        <td>6万</td>
+                        <td>6.0万</td>
                         <td class="growth-zero">-</td>
                         <td class="total-col">69.4万</td>
                     </tr>
                     <tr>
                         <td class="date-col">2026-03-31</td>
-                        <td>37万</td>
+                        <td>37.0万</td>
                         <td class="growth-zero">-</td>
                         <td>13.2万</td>
                         <td class="growth-zero">-</td>
                         <td>13.2万</td>
                         <td class="growth-zero">-</td>
-                        <td>6万</td>
+                        <td>6.0万</td>
                         <td class="growth-zero">-</td>
                         <td class="total-col">69.4万</td>
                     </tr>
@@ -458,14 +518,104 @@
     
     <script>
         const statsData = {
-            "last_update": "2026-04-03T10:10:00",
-            "current": {
-                "taptap": {"reserve": 380000, "rating": 7.3, "follow": 370000, "reviews": 905},
-                "bilibili": {"reserve": 141000, "rating": 9.3},
-                "haoyoukuaibao": {"reserve": 137000, "rating": 8.3},
-                "4399": {"reserve": 73000, "rating": 9.2}
-            }
-        };
+          "last_update": "2026-04-09T11:29:00.000Z",
+          "game_name": "怪物猎人：旅人",
+          "current": {
+                    "taptap": {
+                              "reserve": 406442,
+                              "follow": 390000,
+                              "rating": 7.3,
+                              "reviews": 931,
+                              "rank": "预约榜 #21"
+                    },
+                    "bilibili": {
+                              "reserve": 156000,
+                              "rating": 9.3,
+                              "rank": "预约榜 #6"
+                    },
+                    "haoyoukuaibao": {
+                              "reserve": 147039,
+                              "rating": 8.3,
+                              "rank": "新游期待榜 #7"
+                    },
+                    "4399": {
+                              "reserve": 73305,
+                              "rating": 9.2,
+                              "rank": "预约榜 Top7"
+                    }
+          },
+          "growth_rate": {
+                    "daily": 0.05
+          }
+};
+        
+        const historyData = {
+        "records": [
+                {
+                        "4399": 60000,
+                        "date": "2026-03-31",
+                        "taptap": 370000,
+                        "bilibili": 132000,
+                        "haoyoukuaibao": 132000
+                },
+                {
+                        "4399": 60000,
+                        "date": "2026-04-01",
+                        "taptap": 370000,
+                        "bilibili": 132000,
+                        "haoyoukuaibao": 132000
+                },
+                {
+                        "4399": 70000,
+                        "date": "2026-04-02",
+                        "taptap": 380000,
+                        "bilibili": 141000,
+                        "haoyoukuaibao": 134000
+                },
+                {
+                        "4399": 71345,
+                        "date": "2026-04-04",
+                        "taptap": 396784,
+                        "bilibili": 151276,
+                        "haoyoukuaibao": 140765
+                },
+                {
+                        "4399": 71345,
+                        "date": "2026-04-05",
+                        "taptap": 396784,
+                        "bilibili": 151693,
+                        "haoyoukuaibao": 142934
+                },
+                {
+                        "4399": 71342,
+                        "date": "2026-04-06",
+                        "taptap": 397441,
+                        "bilibili": 153105,
+                        "haoyoukuaibao": 144379
+                },
+                {
+                        "4399": 72285,
+                        "date": "2026-04-07",
+                        "taptap": 400396,
+                        "bilibili": 154508,
+                        "haoyoukuaibao": 146247
+                },
+                {
+                        "4399": 73305,
+                        "date": "2026-04-08",
+                        "taptap": 406442,
+                        "bilibili": 155574,
+                        "haoyoukuaibao": 147039
+                },
+                {
+                        "4399": 73305,
+                        "date": "2026-04-09",
+                        "taptap": 406442,
+                        "bilibili": 156000,
+                        "haoyoukuaibao": 147039
+                }
+        ]
+};
         
         function loadStats() {
             const current = statsData.current;

@@ -1,72 +1,32 @@
 {
-  "last_update": "2026-04-03T10:10:00",
+  "last_update": "2026-04-09T11:29:00.000Z",
   "game_name": "怪物猎人：旅人",
   "current": {
     "taptap": {
-      "reserve": 380000,
-      "follow": 370000,
+      "reserve": 406442,
+      "follow": 390000,
       "rating": 7.3,
-      "reviews": 905,
-      "rank": "预约榜 #4",
-      "update_time": "2026-04-03T10:10:00"
+      "reviews": 931,
+      "rank": "预约榜 #21"
     },
     "bilibili": {
-      "reserve": 141000,
+      "reserve": 156000,
       "rating": 9.3,
-      "rank": "游戏预约榜 #2",
-      "update_time": "2026-04-03T10:10:00"
+      "rank": "预约榜 #6"
     },
     "haoyoukuaibao": {
-      "reserve": 137000,
+      "reserve": 147039,
       "rating": 8.3,
-      "rank": "新游期待榜 #2",
-      "update_time": "2026-04-03T10:10:00"
+      "rank": "新游期待榜 #7"
     },
     "4399": {
-      "reserve": 73000,
+      "reserve": 73305,
       "rating": 9.2,
-      "rank": "预约榜 Top3",
-      "note": "4399预约人数",
-      "update_time": "2026-04-03T10:10:00"
+      "rank": "预约榜 Top7"
     }
   },
-  "history": [
-    {
-      "date": "2026-03-31",
-      "taptap_reserve": 370000,
-      "bilibili_reserve": 132000,
-      "haoyoukuaibao_reserve": 132000,
-      "reserve_4399": 60000,
-      "total_reserve": 694000
-    },
-    {
-      "date": "2026-04-01",
-      "taptap_reserve": 370000,
-      "bilibili_reserve": 132000,
-      "haoyoukuaibao_reserve": 132000,
-      "reserve_4399": 60000,
-      "total_reserve": 694000
-    },
-    {
-      "date": "2026-04-02",
-      "taptap_reserve": 380000,
-      "bilibili_reserve": 141000,
-      "haoyoukuaibao_reserve": 134000,
-      "reserve_4399": 70000,
-      "total_reserve": 725000
-    },
-    {
-      "date": "2026-04-03",
-      "taptap_reserve": 380000,
-      "bilibili_reserve": 141000,
-      "haoyoukuaibao_reserve": 137000,
-      "reserve_4399": 73000,
-      "total_reserve": 731000
-    }
-  ],
+  "total": 782786,
   "growth_rate": {
-    "daily": 0.8,
-    "weekly": 5.3,
-    "monthly": 5.3
+    "daily": 0.05
   }
 }
